@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 
 enum Operator {
     add = '+',
@@ -17,7 +17,16 @@ export const useCalculator = () => {
     const lastOperation = useRef<Operator>();
 
     useEffect(() => {
-        setFormula(number)
+        if (lastOperation.current) {
+            const firsFormulaPart = formula.split(' ').at(0);
+            setFormula(`${firsFormulaPart}${lastOperation.current}${number}`);
+        } else {
+            setFormula(number);
+        }
+    }, [number])
+
+    useEffect(() => {
+        //setFormula(number)
     }, [number]);
 
     const clean = () => {
@@ -50,6 +59,41 @@ export const useCalculator = () => {
         }
 
         setNumber('0');
+    }
+
+    const setLastNumber = () => {
+        // todo: Calculate Number
+
+        if (number.endsWith('.')) {
+            setPrevNumber(number.slice(0, -1));
+        }
+
+        setPrevNumber(number);
+        setNumber('0')
+    }
+
+    const divideOperation = () => {
+        setLastNumber();
+
+        lastOperation.current = Operator.divide;
+    }
+
+    const addOperation = () => {
+        setLastNumber();
+
+        lastOperation.current = Operator.add;
+    }
+
+    const subTractOperation = () => {
+        setLastNumber();
+
+        lastOperation.current = Operator.subtract;
+    }
+
+    const multiplyOperation = () => {
+        setLastNumber();
+
+        lastOperation.current = Operator.multiply;
     }
 
     const buildNumber = (numberString: string) => {
@@ -91,6 +135,12 @@ export const useCalculator = () => {
         deleteLastNumber,
         buildNumber,
         toggleSing,
-        clean
+        clean,
+
+        //* Operaionts
+        divideOperation,
+        multiplyOperation,
+        subTractOperation,
+        addOperation,
     }
 }

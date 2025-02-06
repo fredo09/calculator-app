@@ -1,24 +1,41 @@
 import React from 'react';
 import { View } from 'react-native';
 import { CustomText } from "@/components/CustomText";
-
-import { globalStyles } from '@/styles/global.styles';
 import { CalculatorButton } from '@/components';
+
 import { Colors } from '@/constants/Colors';
+import { globalStyles } from '@/styles/global.styles';
+
 import { useCalculator } from '@/hooks/useCalculator';
 
 export default function Calculator () {
-
     //! UseCalculator
-    const { formula, buildNumber, clean, toggleSing, deleteLastNumber } = useCalculator();
-
+    const { 
+        formula, 
+        prevNumber, 
+        buildNumber, 
+        clean, 
+        toggleSing, 
+        deleteLastNumber, 
+        divideOperation,
+        addOperation,
+        subTractOperation,
+        multiplyOperation
+    } = useCalculator();
 
     return (
         <View style={globalStyles.calculatorContainer}>
             {/* View -> div */}
             <View style={{ paddingHorizontal: 30, paddingBottom: 20 }}>
                 <CustomText variant="h1">{ formula }</CustomText>
-                <CustomText variant="h2">100</CustomText>
+
+                {
+                    formula === prevNumber ? (
+                        <CustomText variant="h2"> </CustomText>
+                    ) : (
+                        <CustomText variant="h2">{prevNumber}</CustomText>
+                    )
+                }
             </View>
 
             {/* Botons */}
@@ -41,7 +58,7 @@ export default function Calculator () {
                 <CalculatorButton 
                     label="÷"
                     color={Colors.orange}
-                    onPress={() => console.log("÷")} />
+                    onPress={divideOperation} />
             </View>
 
             <View style={globalStyles.row}>
@@ -57,7 +74,7 @@ export default function Calculator () {
                 <CalculatorButton 
                     label="x"
                     color={Colors.orange}
-                    onPress={() => console.log("oki")} />
+                    onPress={multiplyOperation} />
             </View>
 
             <View style={globalStyles.row}>
@@ -73,7 +90,7 @@ export default function Calculator () {
                 <CalculatorButton
                     label="-"
                     color={Colors.orange}
-                    onPress={() => console.log("-")} />
+                    onPress={subTractOperation} />
             </View>
 
             <View style={globalStyles.row}>
@@ -89,7 +106,7 @@ export default function Calculator () {
                 <CalculatorButton 
                     label="+"
                     color={Colors.orange}
-                    onPress={() => console.log("oki")} />
+                    onPress={addOperation} />
             </View>
 
             <View style={globalStyles.row}>
