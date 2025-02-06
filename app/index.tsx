@@ -10,7 +10,7 @@ import { useCalculator } from '@/hooks/useCalculator';
 export default function Calculator () {
 
     //! UseCalculator
-    const { formula, buildNumber } = useCalculator();
+    const { formula, buildNumber, clean, toggleSing, deleteLastNumber } = useCalculator();
 
 
     return (
@@ -27,17 +27,17 @@ export default function Calculator () {
                     label="C" 
                     blackText
                     color={Colors.ligthGray}
-                    onPress={() => console.log("oki")}/>
+                    onPress={clean}/>
                 <CalculatorButton 
                     label="+/-" 
                     blackText
                     color={Colors.ligthGray}
-                    onPress={() => console.log("oki")} />
+                    onPress={toggleSing} />
                 <CalculatorButton 
                     label="del" 
                     blackText
                     color={Colors.ligthGray}
-                    onPress={() => console.log("oki")} />
+                    onPress={deleteLastNumber} />
                 <CalculatorButton 
                     label="÷"
                     color={Colors.orange}
