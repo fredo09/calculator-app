@@ -19,15 +19,16 @@ export const useCalculator = () => {
     useEffect(() => {
         if (lastOperation.current) {
             const firsFormulaPart = formula.split(' ').at(0);
-            setFormula(`${firsFormulaPart}${lastOperation.current}${number}`);
+            setFormula(`${firsFormulaPart} ${lastOperation.current} ${number}`);
         } else {
             setFormula(number);
         }
     }, [number])
 
     useEffect(() => {
-        //setFormula(number)
-    }, [number]);
+        const subResult = calculateSubResult();
+        setPrevNumber(`${subResult}`)
+    }, [formula]);
 
     const clean = () => {
         setNumber('0');
@@ -63,6 +64,7 @@ export const useCalculator = () => {
 
     const setLastNumber = () => {
         // todo: Calculate Number
+        calculateResult();
 
         if (number.endsWith('.')) {
             setPrevNumber(number.slice(0, -1));
@@ -121,8 +123,38 @@ export const useCalculator = () => {
             //! Evitar 000000000.00
             if (numberString === '0' && !number.includes('.')) return;
         }
-
         setNumber(number + numberString);
+    }
+
+    const calculateSubResult = () => {
+        const [ firstValue, operation, secondValue ] = formula.split(' ');
+
+        const num1 = Number(firstValue);
+        const num2 = Number(secondValue);
+
+        if (isNaN(num2)) return num1;
+
+        switch(operation) {
+            case Operator.add:
+                return num1 + num2;
+            case Operator.subtract:
+                return num1 - num2;
+            case Operator.multiply:
+                return num1 * num2;
+            case Operator.divide:
+                return num1 / num2
+            
+            default:
+                throw new Error(`No se ha agregado el operador ${operation} a la calculadora`)
+        }
+    }
+
+    const calculateResult = () => {
+        const result = calculateSubResult();
+        setFormula(`${result}`);
+
+        lastOperation.current = undefined;
+        setPrevNumber('0');
     }
 
     return {
@@ -141,6 +173,8 @@ export const useCalculator = () => {
         divideOperation,
         multiplyOperation,
         subTractOperation,
+        calculateSubResult,
+        calculateResult,
         addOperation,
     }
 }

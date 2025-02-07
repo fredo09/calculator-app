@@ -20,7 +20,9 @@ export default function Calculator () {
         divideOperation,
         addOperation,
         subTractOperation,
-        multiplyOperation
+        multiplyOperation,
+        calculateSubResult,
+        calculateResult
     } = useCalculator();
 
     return (
@@ -120,7 +122,7 @@ export default function Calculator () {
                 <CalculatorButton 
                     label="="
                     color={Colors.orange}
-                    onPress={() => console.log("=")} />
+                    onPress={calculateResult} />
             </View>
         </View>
     ); 
